@@ -1,7 +1,7 @@
 {
   "allowHttpBackend": false,
-  "backendCommand": "npm run dev",
-  "backendFolderName": "/Users/mag/Projects/twitch-queue",
+  "backendCommand": "",
+  "backendFolderName": "",
   "certificateExceptions": [],
   "extensionViews": [
     {

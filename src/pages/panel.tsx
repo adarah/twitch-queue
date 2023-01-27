@@ -1,4 +1,3 @@
-import Home from './index';
 const Panel = () => {
     return (
         <div>
