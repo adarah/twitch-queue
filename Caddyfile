@@ -1,0 +1,4 @@
+caddy.localhost {
+ reverse_proxy :3000
+}
+

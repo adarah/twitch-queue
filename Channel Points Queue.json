@@ -1,16 +1,39 @@
 {
   "allowHttpBackend": false,
-  "backendCommand": "",
-  "backendFolderName": "",
+  "backendCommand": "npm run dev",
+  "backendFolderName": "/Users/mag/Projects/twitch-queue",
   "certificateExceptions": [],
-  "extensionViews": [],
+  "extensionViews": [
+    {
+      "channelId": "56832666",
+      "configurationAnchor": "panel",
+      "displayChannelName": "magneticspark",
+      "features": {
+        "isBitsEnabled": false,
+        "isChatEnabled": false,
+        "isSubscriptionStatusAvailable": false
+      },
+      "frameSize": {
+        "width": 1280,
+        "height": 720
+      },
+      "id": "1",
+      "isPopout": false,
+      "label": "Some label",
+      "linked": false,
+      "linkedUserId": "",
+      "orientation": "Portrait",
+      "type": "panel",
+      "viewerType": "Broadcaster"
+    }
+  ],
   "manifest": {
     "anchor": "panel",
     "assetUrls": [],
     "authorName": "https://github.com/adarah",
     "bitsEnabled": false,
     "canInstall": true,
-    "configUrl": "https://localhost:8080/config.html",
+    "configUrl": "https://caddy.localhost/config.html",
     "configurationLocation": "none",
     "description": "",
     "eulaTosUrl": "",
@@ -34,18 +57,18 @@
     "vendorCode": "",
     "version": "0.0.1",
     "viewerSummary": "",
-    "viewerUrl": "https://localhost:8080/panel.html",
+    "viewerUrl": "https://caddy.localhost/panel",
     "viewerUrls": {
-      "panel": "https://localhost:8080/panel.html"
+      "panel": "https://caddy.localhost/panel"
     },
     "views": {
       "panel": {
-        "viewerUrl": "https://localhost:8080/panel.html",
+        "viewerUrl": "https://caddy.localhost/panel",
         "height": 300,
         "canLinkExternalContent": false
       },
       "config": {
-        "viewerUrl": "https://localhost:8080/config.html",
+        "viewerUrl": "https://caddy.localhost/config.html",
         "canLinkExternalContent": false
       }
     },
