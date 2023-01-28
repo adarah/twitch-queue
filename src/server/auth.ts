@@ -1,6 +1,8 @@
+import jwt from 'jsonwebtoken';
 import { type GetServerSidePropsContext } from "next";
-import { unstable_getServerSession } from "next-auth";
+import { unstable_getServerSession, User } from "next-auth";
 
+import { env } from "../env/server.mjs";
 import { authOptions } from "../pages/api/auth/[...nextauth]";
 
 /**
@@ -19,3 +21,21 @@ export const getServerAuthSession = async (ctx: {
 }) => {
   return await unstable_getServerSession(ctx.req, ctx.res, authOptions);
 };
+
+
+export function getUserFromAuthHeader(req: GetServerSidePropsContext['req']): User | null {
+  const auth = req.headers['authorization']
+  if (auth === undefined) return null;
+  try {
+    const payload = jwt.verify(auth, Buffer.from(env.TWITCH_EXTENSION_SECRET, 'base64'))
+    if (typeof payload === 'string') return null;
+    return {
+      id: payload.user_id,
+      channelId: payload.channel_id,
+      role: payload.role,
+      pubsubPerms: payload.pubsub_perms,
+    }
+  } catch {
+  return null;
+}
+}

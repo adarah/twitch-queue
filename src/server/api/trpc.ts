@@ -17,13 +17,14 @@
  *
  */
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
-import { type Session } from "next-auth";
+import { User, type Session } from "next-auth";
 
-import { getServerAuthSession } from "../auth";
+import { getServerAuthSession, getUserFromAuthHeader } from "../auth";
 import { prisma } from "../db";
 
 type CreateContextOptions = {
   session: Session | null;
+  user: User | null
 };
 
 /**
@@ -39,6 +40,7 @@ const createInnerTRPCContext = (opts: CreateContextOptions) => {
   return {
     session: opts.session,
     prisma,
+    user: opts.user
   };
 };
 
@@ -50,13 +52,16 @@ const createInnerTRPCContext = (opts: CreateContextOptions) => {
 export const createTRPCContext = async (opts: CreateNextContextOptions) => {
   const { req, res } = opts;
 
+  const user = getUserFromAuthHeader(req);
   // Get the session from the server using the unstable_getServerSession wrapper function
   const session = await getServerAuthSession({ req, res });
 
   return createInnerTRPCContext({
     session,
+    user
   });
 };
+
 
 /**
  * 2. INITIALIZATION
@@ -101,16 +106,27 @@ export const publicProcedure = t.procedure;
  * procedure
  */
 const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
-  if (!ctx.session || !ctx.session.user) {
+  if (ctx.user === null) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
   return next({
     ctx: {
       // infers the `session` as non-nullable
-      session: { ...ctx.session, user: ctx.session.user },
+      user: ctx.user
     },
   });
 });
+
+const enforceUserIsBroadcaster = t.middleware(({ ctx, next }) => {
+  if (ctx.user?.role !== 'broadcaster') {
+    throw new TRPCError({ code: "UNAUTHORIZED" })
+  }
+  return next({
+    ctx: {
+      user: ctx.user
+    }
+  })
+})
 
 /**
  * Protected (authed) procedure
@@ -122,3 +138,5 @@ const enforceUserIsAuthed = t.middleware(({ ctx, next }) => {
  * @see https://trpc.io/docs/procedures
  */
 export const protectedProcedure = t.procedure.use(enforceUserIsAuthed);
+
+export const broadcasterProcedure = t.procedure.use(enforceUserIsBroadcaster)

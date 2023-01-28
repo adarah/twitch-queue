@@ -1,27 +1,52 @@
 import NextAuth, { type NextAuthOptions } from "next-auth";
-import TwitchProvider from 'next-auth/providers/twitch';
+import CredentialsProvider from 'next-auth/providers/credentials';
 // Prisma adapter for NextAuth, optional and can be removed
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
 import { env } from "../../../env/server.mjs";
+import jwt from 'jsonwebtoken';
 import { prisma } from "../../../server/db";
 
 export const authOptions: NextAuthOptions = {
   // Include user.id on session
   callbacks: {
-    session({ session, user }) {
-      if (session.user) {
-        session.user.id = user.id;
+    jwt({token, user}) {
+      if (user) {
+        token.user = user;
+      }
+      return token;
+    },
+    session({ session, token }) {
+      if (token.user) {
+        session.user = token.user;
       }
       return session;
     },
   },
   // Configure one or more authentication providers
   adapter: PrismaAdapter(prisma),
+  session: {
+    strategy: 'jwt',
+    maxAge: 86400
+  },
   providers: [
-    TwitchProvider({
-      clientId: env.TWITCH_CLIENT_ID,
-      clientSecret: env.TWITCH_CLIENT_SECRET,
+    CredentialsProvider({
+      id: 'credentials',
+      name: "Twitch Extension Token",
+      credentials: {
+        token: { label: 'JWT', type: 'password' }
+      },
+      async authorize(credentials, req) {
+        if (credentials === undefined) return null;
+        const payload = jwt.verify(credentials.token, Buffer.from(env.TWITCH_EXTENSION_SECRET, 'base64'));
+        if (typeof payload === 'string') return null;
+        return {
+          id: payload.user_id,
+          channelId: payload.channel_id,
+          role: payload.role,
+          pubsubPerms: payload.pubsub_perms,
+        }
+      },
     }),
     /**
      * ...add more providers here

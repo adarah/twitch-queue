@@ -25,6 +25,28 @@
       "orientation": "Portrait",
       "type": "panel",
       "viewerType": "Broadcaster"
+    },
+    {
+      "channelId": "56832666",
+      "configurationAnchor": "panel",
+      "displayChannelName": "magneticspark",
+      "features": {
+        "isBitsEnabled": false,
+        "isChatEnabled": false,
+        "isSubscriptionStatusAvailable": false
+      },
+      "frameSize": {
+        "width": 1280,
+        "height": 720
+      },
+      "id": "2",
+      "isPopout": false,
+      "label": "",
+      "linked": true,
+      "linkedUserId": "265737932",
+      "orientation": "Portrait",
+      "type": "config",
+      "viewerType": "Broadcaster"
     }
   ],
   "manifest": {
@@ -33,8 +55,8 @@
     "authorName": "https://github.com/adarah",
     "bitsEnabled": false,
     "canInstall": true,
-    "configUrl": "https://caddy.localhost/config.html",
-    "configurationLocation": "none",
+    "configUrl": "https://caddy.localhost/config",
+    "configurationLocation": "custom",
     "description": "",
     "eulaTosUrl": "",
     "hasChatSupport": false,
@@ -44,9 +66,9 @@
     "installationCount": -42,
     "liveConfigUrl": "",
     "name": "Channel Points Queue",
-    "panelHeight": 300,
+    "panelHeight": 500,
     "privacyPolicyUrl": "",
-    "requestIdentityLink": false,
+    "requestIdentityLink": true,
     "requiredBroadcasterAbilities": [],
     "screenshotUrls": [],
     "sku": "",
@@ -64,11 +86,11 @@
     "views": {
       "panel": {
         "viewerUrl": "https://caddy.localhost/panel",
-        "height": 300,
+        "height": 500,
         "canLinkExternalContent": false
       },
       "config": {
-        "viewerUrl": "https://caddy.localhost/config.html",
+        "viewerUrl": "https://caddy.localhost/config",
         "canLinkExternalContent": false
       }
     },

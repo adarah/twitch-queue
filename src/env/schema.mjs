@@ -21,6 +21,9 @@ export const serverSchema = z.object({
   ),
   TWITCH_CLIENT_ID: z.string(),
   TWITCH_CLIENT_SECRET: z.string(),
+  TWITCH_EXTENSION_ID: z.string(),
+  TWITCH_EXTENSION_SECRET: z.string(),
+  TWITCH_EXTENSION_VERSION: z.string(),
 });
 
 /**
@@ -35,6 +38,9 @@ export const serverEnv = {
   NEXTAUTH_URL: process.env.NEXTAUTH_URL,
   TWITCH_CLIENT_ID: process.env.TWITCH_CLIENT_ID,
   TWITCH_CLIENT_SECRET: process.env.TWITCH_CLIENT_SECRET,
+  TWITCH_EXTENSION_ID: process.env.TWITCH_EXTENSION_ID,
+  TWITCH_EXTENSION_SECRET: process.env.TWITCH_EXTENSION_SECRET,
+  TWITCH_EXTENSION_VERSION: process.env.TWITCH_EXTENSION_VERSION,
 };
 
 /**
